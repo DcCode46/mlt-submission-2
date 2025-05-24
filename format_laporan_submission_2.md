@@ -1,80 +1,78 @@
-# Laporan Proyek Machine Learning - Nama Anda
+## Laporan Proyek Machine Learning - DWI NURCAHYO PURBONEGORO
 
-## Project Overview
+### Project Overview
 
-Pada bagian ini, Kamu perlu menuliskan latar belakang yang relevan dengan proyek yang diangkat.
+Dalam era digital saat ini, konsumen seringkali dihadapkan dengan banyaknya pilihan produk smartphone di pasaran. Banyaknya pilihan ini dapat menimbulkan kebingungan dalam pengambilan keputusan pembelian. Oleh karena itu, dibutuhkan sistem rekomendasi yang mampu membantu pengguna untuk menemukan produk yang sesuai dengan preferensi dan kebutuhan mereka. Proyek ini bertujuan membangun sistem rekomendasi smartphone dengan memanfaatkan pendekatan Content-based Filtering dan Collaborative Filtering.
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Jelaskan mengapa dan bagaimana masalah tersebut harus diselesaikan
-- Menyertakan hasil riset terkait atau referensi. Referensi yang diberikan harus berasal dari sumber yang kredibel dan author yang jelas.
-- Format Referensi dapat mengacu pada penulisan sitasi [IEEE](https://journals.ieeeauthorcenter.ieee.org/wp-content/uploads/sites/7/IEEE_Reference_Guide.pdf), [APA](https://www.mendeley.com/guides/apa-citation-guide/) atau secara umum seperti [di sini](https://penerbitdeepublish.com/menulis-buku-membuat-sitasi-dengan-mudah/)
-- Sumber yang bisa digunakan [Scholar](https://scholar.google.com/)
+Sistem rekomendasi semacam ini dapat meningkatkan pengalaman pengguna, meningkatkan penjualan, dan efisiensi pencarian produk pada platform e-commerce. Berdasarkan studi dari Ricci et al. (2011), sistem rekomendasi memiliki kontribusi signifikan dalam e-commerce karena mampu menyajikan informasi relevan secara personal.
 
-## Business Understanding
+### Business Understanding
 
-Pada bagian ini, Anda perlu menjelaskan proses klarifikasi masalah.
+#### Problem Statements
 
-Bagian laporan ini mencakup:
+1. Bagaimana merekomendasikan produk smartphone kepada pengguna berdasarkan fitur dan preferensi pengguna?
+2. Bagaimana meningkatkan relevansi hasil rekomendasi agar sesuai dengan minat pengguna?
 
-### Problem Statements
+#### Goals
 
-Menjelaskan pernyataan masalah:
-- Pernyataan Masalah 1
-- Pernyataan Masalah 2
-- Pernyataan Masalah n
+1. Mengembangkan model rekomendasi berbasis konten untuk menyarankan smartphone dengan fitur serupa.
+2. Mengembangkan model rekomendasi berbasis kolaboratif untuk menyarankan smartphone berdasarkan interaksi pengguna lain.
 
-### Goals
+#### Solution Approach
 
-Menjelaskan tujuan proyek yang menjawab pernyataan masalah:
-- Jawaban pernyataan masalah 1
-- Jawaban pernyataan masalah 2
-- Jawaban pernyataan masalah n
+1. **Content-based Filtering**: Menggunakan data pada kolom "corpus" untuk mengekstrak fitur smartphone dan merekomendasikan produk serupa.
+2. **Collaborative Filtering**: Menggunakan matrix factorization (contoh: SVD) untuk membangun model berdasarkan rating pengguna.
 
-Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pernyataan masalah dan juga goals yang diinginkan.
+### Data Understanding
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Menambahkan bagian “Solution Approach” yang menguraikan cara untuk meraih goals. Bagian ini dibuat dengan ketentuan sebagai berikut: 
+Dataset yang digunakan terdiri dari 2546 entri dengan 5 kolom, yaitu:
 
-    ### Solution statements
-    - Mengajukan 2 atau lebih solution approach (algoritma atau pendekatan sistem rekomendasi).
+* **name**: Nama produk smartphone.
+* **ratings**: Skor rating dari pengguna.
+* **price**: Harga produk (dalam format teks, perlu diubah ke numerik).
+* **imgURL**: URL gambar produk.
+* **corpus**: Deskripsi fitur produk (seperti RAM, storage, OS, dll).
 
-## Data Understanding
-Paragraf awal bagian ini menjelaskan informasi mengenai jumlah data, kondisi data, dan informasi mengenai data yang digunakan. Sertakan juga sumber atau tautan untuk mengunduh dataset. Contoh: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data).
+Jumlah nilai null pada kolom `corpus`: 12 nilai.
+Jumlah duplikasi data: 1 baris.
 
-Selanjutnya, uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:  
+Dataset diperoleh dari hasil scraping situs e-commerce.
 
-Variabel-variabel pada Restaurant UCI dataset adalah sebagai berikut:
-- accepts : merupakan jenis pembayaran yang diterima pada restoran tertentu.
-- cuisine : merupakan jenis masakan yang disajikan pada restoran.
-- dst
+### Data Preparation
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Melakukan beberapa tahapan yang diperlukan untuk memahami data, contohnya teknik visualisasi data beserta insight atau exploratory data analysis.
+1. Menghapus nilai null pada kolom `corpus`.
+2. Membersihkan dan mengonversi kolom `price` menjadi numerik.
+3. Menghilangkan baris duplikat.
+4. Mengubah semua teks pada `corpus` menjadi huruf kecil dan membersihkannya.
+5. Menggunakan TF-IDF Vectorizer untuk mentransformasikan `corpus` menjadi vektor fitur.
+6. Melakukan scaling data jika diperlukan untuk model kolaboratif.
 
-## Data Preparation
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
+### Modeling
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
+#### Content-based Filtering
 
-## Modeling
-Tahapan ini membahas mengenai model sisten rekomendasi yang Anda buat untuk menyelesaikan permasalahan. Sajikan top-N recommendation sebagai output.
+* Menggunakan TF-IDF pada kolom `corpus`.
+* Menghitung similarity antar produk menggunakan cosine similarity.
+* Menghasilkan top-N rekomendasi berdasarkan item yang sedang dilihat pengguna.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menyajikan dua solusi rekomendasi dengan algoritma yang berbeda.
-- Menjelaskan kelebihan dan kekurangan dari solusi/pendekatan yang dipilih.
+#### Collaborative Filtering
 
-## Evaluation
-Pada bagian ini Anda perlu menyebutkan metrik evaluasi yang digunakan. Kemudian, jelaskan hasil proyek berdasarkan metrik evaluasi tersebut.
+* Menggunakan pendekatan matrix factorization (SVD).
+* Membangun matriks user-item berdasarkan `ratings`.
+* Menghasilkan top-N rekomendasi untuk pengguna berdasarkan pola pengguna lain.
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
+### Evaluation
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
+#### Content-based Filtering
 
-**---Ini adalah bagian akhir laporan---**
+* **Precision\@K** dan manual review dari rekomendasi yang diberikan.
 
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
+#### Collaborative Filtering
+
+* **RMSE** (Root Mean Squared Error) untuk mengukur akurasi prediksi rating.
+
+Kedua model dibandingkan berdasarkan relevansi hasil dan potensi skalabilitas. Model content-based lebih unggul pada cold-start item, sementara model collaborative unggul pada penemuan preferensi tersembunyi pengguna.
+
+---
+
+*Catatan: laporan dapat dilengkapi dengan visualisasi, kode snippet, atau tabel evaluasi sesuai kebutuhan.*
