@@ -25,7 +25,7 @@ Sistem rekomendasi semacam ini dapat meningkatkan pengalaman pengguna, meningkat
 
 ### Data Understanding
 
-Dataset yang digunakan terdiri dari 2546 entri dengan 5 kolom, yaitu:
+Dataset yang digunakan berasal dari kaggle (https://www.kaggle.com/datasets/gyanprakashkushwaha/mobile-recommendation-system-dataset) terdiri dari 2546 entri dengan 5 kolom, yaitu:
 
 * **name**: Nama produk smartphone.
 * **ratings**: Skor rating dari pengguna.
@@ -36,16 +36,15 @@ Dataset yang digunakan terdiri dari 2546 entri dengan 5 kolom, yaitu:
 Jumlah nilai null pada kolom `corpus`: 12 nilai.
 Jumlah duplikasi data: 1 baris.
 
-Dataset diperoleh dari hasil scraping situs e-commerce.
-
 ### Data Preparation
 
-1. Menghapus nilai null pada kolom `corpus`.
-2. Membersihkan dan mengonversi kolom `price` menjadi numerik.
-3. Menghilangkan baris duplikat.
-4. Mengubah semua teks pada `corpus` menjadi huruf kecil dan membersihkannya.
-5. Menggunakan TF-IDF Vectorizer untuk mentransformasikan `corpus` menjadi vektor fitur.
-6. Melakukan scaling data jika diperlukan untuk model kolaboratif.
+1. Load dataset dari kaggle dan melakukan EDA
+2. Menghapus nilai null pada kolom `corpus`.
+3. Membersihkan dan mengonversi kolom `price` menjadi numerik.
+4. Menghilangkan baris duplikat.
+5. Mengubah semua teks pada `corpus` menjadi huruf kecil dan membersihkannya.
+6. Menggunakan TF-IDF Vectorizer untuk mentransformasikan `corpus` menjadi vektor fitur.
+7. Melakukan scaling data jika diperlukan untuk model kolaboratif.
 
 ### Modeling
 
