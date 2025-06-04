@@ -270,11 +270,243 @@ Jumlah duplikasi data: 1 baris.
 * Menghitung similarity antar produk menggunakan cosine similarity.
 * Menghasilkan top-N rekomendasi berdasarkan item yang sedang dilihat pengguna.
 
+### Content-Based Filtering – Penjelasan Cara Kerja dan Tujuan
+
+#### **Cara Kerja:**
+
+1. **Menggunakan TF-IDF pada kolom `corpus`:**
+
+   * Setiap deskripsi produk (`corpus`) diubah menjadi vektor numerik menggunakan **TF-IDF (Term Frequency–Inverse Document Frequency)**.
+   * TF-IDF menekankan kata-kata penting yang unik di setiap produk, dan mengurangi pengaruh kata-kata umum.
+
+2. **Menghitung similarity antar produk menggunakan cosine similarity:**
+
+   * Setelah semua deskripsi dikonversi menjadi vektor, sistem menghitung **kemiripan antar produk** menggunakan **cosine similarity**, yang mengukur sudut antara dua vektor (nilai antara 0 dan 1).
+   * Produk dengan nilai cosine similarity tinggi berarti sangat mirip secara deskripsi.
+
+3. **Menghasilkan top-N rekomendasi:**
+
+   * Ketika pengguna melihat satu produk, sistem mencari produk lain dengan nilai cosine similarity tertinggi terhadap produk tersebut.
+   * Sistem akan merekomendasikan **N produk teratas** (misalnya 5 atau 10) yang paling mirip.
+
+
+#### **Tujuan:**
+
+* Memberikan rekomendasi **produk-produk serupa berdasarkan konten** atau fitur yang dimiliki produk, seperti spesifikasi teknis, sistem operasi, RAM, prosesor, dll.
+* Tidak bergantung pada perilaku pengguna lain atau rating, sehingga cocok untuk:
+
+  * Produk baru (cold start item)
+  * Pengguna yang belum banyak berinteraksi (anonymous user browsing)
+* Memberikan rekomendasi yang **lebih personal dan relevan** dengan produk yang sedang dilihat pengguna.
+
+
 #### Collaborative Filtering
 
 * Menggunakan pendekatan matrix factorization (SVD).
 * Membangun matriks user-item berdasarkan `ratings`.
 * Menghasilkan top-N rekomendasi untuk pengguna berdasarkan pola pengguna lain.
+
+### Collaborative Filtering – Penjelasan Cara Kerja dan Tujuan
+
+#### **Cara Kerja:**
+
+1. **Menggunakan pendekatan matrix factorization (SVD):**
+
+   * Collaborative Filtering berbasis **SVD (Singular Value Decomposition)** memecah **matriks user-item** menjadi tiga matriks terpisah untuk menemukan **hubungan tersembunyi** antara pengguna dan produk.
+   * SVD mengurangi dimensi data untuk mempermudah prediksi **preferensi pengguna terhadap produk** yang belum diberi rating.
+
+2. **Membangun matriks user-item berdasarkan ratings:**
+
+   * Matriks ini menyimpan informasi interaksi antara **pengguna** dan **produk** (biasanya berupa rating).
+   * Baris = pengguna, kolom = produk, nilai = rating. Jika tidak ada interaksi, nilainya kosong (NaN atau 0).
+   * Matriks ini menjadi input untuk algoritma SVD.
+
+3. **Menghasilkan top-N rekomendasi untuk pengguna:**
+
+   * Setelah matriks didekomposisi dan prediksi dilakukan, sistem **mengisi celah kosong** (produk yang belum dinilai pengguna).
+   * Lalu, sistem memilih **N produk dengan skor prediksi tertinggi** untuk diberikan sebagai rekomendasi.
+
+
+#### **Tujuan:**
+
+* Memberikan **rekomendasi yang dipersonalisasi** berdasarkan pola dan perilaku pengguna lain.
+* Tidak memerlukan informasi konten produk secara eksplisit, cukup berdasarkan data interaksi pengguna (misalnya rating).
+* Menyediakan **rekomendasi lintas preferensi**, seperti menyarankan produk yang disukai oleh pengguna lain yang mirip, meskipun produk tersebut sangat berbeda dari yang biasa dilihat pengguna.
+* Efektif untuk menangkap **tren kolektif dan selera umum pengguna**.
+
+![image](https://github.com/user-attachments/assets/725234df-7b8d-43d5-a6c7-201e2031a4fb)
+
+Pada tahap ini, dilakukan instalasi library **NumPy** dengan versi 1.24.4:
+
+### Penjelasan:
+
+* **`!pip install`**: perintah untuk menginstal package Python menggunakan `pip` (Python Package Installer), biasanya digunakan di lingkungan seperti Jupyter Notebook atau Google Colab.
+* **`numpy==1.24.4`**:
+
+  * `numpy`: adalah library Python untuk komputasi numerik yang efisien, seperti operasi matriks, array, dan aljabar linear.
+  * `==1.24.4`: menginstruksikan `pip` untuk **menginstal versi 1.24.4 secara spesifik**, bukan versi terbaru.
+
+
+### Tujuan:
+
+* **Menjamin kompatibilitas** antara NumPy dan library lain dalam proyek (misalnya, `scikit-learn`, `pandas`, atau `surprise` untuk collaborative filtering).
+* Beberapa library mungkin **tidak kompatibel dengan versi NumPy terbaru**, sehingga versi 1.24.4 dipilih untuk **menghindari error atau bug** saat menjalankan model rekomendasi atau matrix factorization.
+
+![image](https://github.com/user-attachments/assets/2acea00b-2be5-4a3f-9888-37ce084ec47b)
+
+Pada tahap ini, dilakukan instalasi library **`scikit-surprise`**:
+
+Penjelasan:
+
+* **`!pip install`**: Perintah untuk menginstal library di Python menggunakan package manager `pip`.
+* **`scikit-surprise`**:
+
+  * Merupakan library Python untuk membangun dan menganalisis **sistem rekomendasi berbasis Collaborative Filtering**.
+  * Nama lengkapnya adalah **`Surprise` (Simple Python RecommendatIon System Engine)**.
+  * Mendukung berbagai algoritma seperti **SVD, KNNBasic, BaselineOnly**, dan lain-lain.
+
+Tujuan:
+
+* Menggunakan algoritma **Collaborative Filtering** berbasis **matrix factorization** (seperti **SVD**) untuk merekomendasikan produk kepada pengguna.
+* `scikit-surprise` menyediakan **API sederhana** untuk:
+
+  * Membuat model rekomendasi dari data user-item (misalnya rating).
+  * Melakukan evaluasi dengan cross-validation.
+  * Memberikan **rekomendasi personalisasi** berdasarkan data pengguna yang tersedia.
+
+![image](https://github.com/user-attachments/assets/f0a0cd6c-a177-4061-b4b8-fccd20d34e37)
+
+Pada tahap ini, dilakukan import library yang dibutuhkan untuk membangun dan mengevaluasi model **Collaborative Filtering** menggunakan pendekatan SVD:
+
+* **`from surprise import SVD, Dataset, Reader`**:
+
+  * `SVD`: algoritma **matrix factorization** yang digunakan untuk membangun sistem rekomendasi berdasarkan pola interaksi pengguna.
+  * `Dataset`: modul untuk memuat dan memproses data rating pengguna.
+  * `Reader`: digunakan untuk mendefinisikan format data rating (misalnya skala minimum dan maksimum).
+
+* **`from surprise.model_selection import train_test_split`**:
+
+  * `train_test_split`: digunakan untuk **membagi data menjadi data latih dan data uji**, guna mengevaluasi performa model.
+
+* **`from surprise import accuracy`**:
+
+  * `accuracy`: modul untuk menghitung metrik evaluasi seperti **RMSE** atau **MAE**, guna menilai seberapa baik prediksi model dibandingkan rating aktual.
+
+* **`import pandas as pd`**:
+
+  * `pandas`: library utama untuk **manipulasi dan analisis data**, digunakan untuk memproses dataset sebelum dimasukkan ke dalam pipeline `surprise`.
+
+
+* **Tujuan**: menyiapkan semua library penting yang dibutuhkan untuk membangun, melatih, dan mengevaluasi sistem rekomendasi berbasis **Collaborative Filtering (SVD)** menggunakan data rating dari pengguna.
+
+![image](https://github.com/user-attachments/assets/c0cc3405-6f41-4180-9e3b-f20d26ace420)
+
+Pada tahap ini, dilakukan simulasi data pengguna dan persiapan dataset untuk membangun model **Collaborative Filtering** menggunakan library `surprise`:
+
+
+* **`df['user_id'] = ['user_' + str(i % 50) for i in range(len(df))]`**:
+
+  * Membuat kolom baru bernama `user_id` yang berisi **50 pengguna fiktif** (`user_0` sampai `user_49`) dengan mendistribusikan secara acak berdasarkan indeks.
+  * Simulasi ini dilakukan karena dataset asli **tidak memiliki data pengguna**.
+
+
+* **`reader = Reader(rating_scale=(df['ratings'].min(), df['ratings'].max()))`**:
+
+  * Membuat objek `Reader` dari library `surprise` untuk mendefinisikan **skala rating**.
+  * `rating_scale=(min, max)` digunakan agar model tahu nilai minimum dan maksimum dari kolom `ratings` (misalnya dari 2.9 sampai 5.0).
+
+
+* **`data = Dataset.load_from_df(df[['user_id', 'name', 'ratings']], reader)`**:
+
+  * Mengubah DataFrame `df` menjadi format yang kompatibel dengan library `surprise`.
+  * Hanya menggunakan kolom `user_id`, `name` (sebagai item), dan `ratings`.
+
+
+* **`trainset, testset = train_test_split(data, test_size=0.2, random_state=4)`**:
+
+  * Membagi data menjadi **data latih (80%)** dan **data uji (20%)**.
+  * `random_state=4` digunakan untuk menjamin hasil pembagian yang konsisten (reproducible).
+
+
+**Tujuan**:
+
+Menyiapkan data dalam format yang dibutuhkan oleh library `surprise`, dengan menyimulasikan pengguna agar model **Collaborative Filtering (SVD)** dapat dibangun dan diuji secara realistis meskipun dataset asli tidak memiliki informasi user.
+
+![image](https://github.com/user-attachments/assets/2d4436ac-0f71-4257-9993-05be474da5a2)
+
+Pada tahap ini, dilakukan **pelatihan dan evaluasi model Collaborative Filtering** menggunakan algoritma **SVD (Singular Value Decomposition)** dari library `surprise`.
+
+*Penjelasan* :
+
+**`model = SVD()`**
+
+* Membuat objek model rekomendasi menggunakan **algoritma SVD**.
+* SVD merupakan teknik **matrix factorization** yang memetakan user dan item ke dalam **ruang vektor laten**, lalu menghitung prediksi rating berdasarkan kemiripan vektor.
+
+**`model.fit(trainset)`**
+
+* Melatih model menggunakan **data pelatihan** (`trainset`) yang sebelumnya telah dibagi.
+* Model mempelajari pola interaksi antara user dan item berdasarkan rating yang tersedia.
+
+**`predictions = model.test(testset)`**
+
+* Menggunakan **data uji (`testset`)** untuk menguji seberapa baik model memprediksi rating yang tidak terlihat selama pelatihan.
+* Menghasilkan daftar prediksi rating untuk setiap pasangan `(user, item)` di data uji.
+
+**`rmse = accuracy.rmse(predictions)`**
+
+* Menghitung **RMSE (Root Mean Squared Error)**, yaitu metrik evaluasi yang mengukur **rata-rata selisih kuadrat antara rating asli dan rating prediksi**.
+* Semakin kecil nilai RMSE, semakin baik performa model.
+
+**Tujuan**:
+
+Mengukur **akurasi prediksi model Collaborative Filtering berbasis SVD** dengan mengevaluasi seberapa dekat rating yang diprediksi dibandingkan rating sebenarnya.
+
+**Output: `RMSE: 0.2108`**
+
+* Ini menunjukkan bahwa **model cukup akurat**, karena nilai RMSE-nya rendah (mendekati 0).
+
+![image](https://github.com/user-attachments/assets/1ee79566-c0b0-4bf3-b80a-7db7b3f512ee)
+
+Pada tahap ini, dilakukan proses untuk **menghasilkan top-N rekomendasi produk untuk setiap pengguna** berdasarkan model **Collaborative Filtering (SVD)** yang telah dilatih:
+
+
+**`from collections import defaultdict`**
+
+* Digunakan untuk membuat struktur data `defaultdict` yang secara otomatis menginisialisasi nilai default (dalam hal ini, list kosong) untuk setiap key baru.
+
+
+**`def get_top_n(predictions, n=5):`**
+
+* Fungsi ini digunakan untuk **mengelompokkan hasil prediksi berdasarkan user**, lalu **mengambil top-N item dengan prediksi rating tertinggi** untuk masing-masing user.
+
+  * `predictions`: hasil prediksi dari model untuk pasangan `(user, item)`.
+  * `top_n[uid]`: menyimpan daftar item dan rating yang diprediksi untuk user `uid`.
+  * `sorted(..., reverse=True)[:n]`: menyortir berdasarkan nilai estimasi rating tertinggi dan mengambil N teratas.
+
+
+**Prediksi untuk item yang belum pernah dilihat user:**
+
+* Mendapatkan semua item dan user yang ada.
+
+* Mengidentifikasi produk yang **sudah pernah diberi rating oleh user** dari data training (`trainset`).
+
+* Menghitung produk **yang belum pernah dilihat** oleh user, yang menjadi **target rekomendasi**.
+
+* Melakukan **prediksi rating** untuk semua pasangan user-item yang belum pernah dilihat.
+
+* Mengambil **Top-5 item** dengan prediksi rating tertinggi untuk setiap user menggunakan fungsi `get_top_n`.
+
+
+**Output:**
+
+* Menampilkan **Top-5 produk** yang direkomendasikan untuk user tertentu, disusun berdasarkan **rating prediksi tertinggi**.
+
+
+**Tujuan**:
+
+* Memberikan **rekomendasi produk personalisasi untuk setiap user** berdasarkan pola interaksi pengguna lain terhadap produk yang sama.
+* Memungkinkan sistem untuk **merekomendasikan item yang belum pernah dilihat**, namun diprediksi disukai oleh user tersebut.
 
 ### Evaluation
 
@@ -282,11 +514,287 @@ Jumlah duplikasi data: 1 baris.
 
 * **Precision\@K** dan manual review dari rekomendasi yang diberikan.
 
+![image](https://github.com/user-attachments/assets/54e83173-0a07-4889-be75-c992dece708a)
+
+Pada tahap ini, dilakukan proses untuk menghitung metrik evaluasi Precision\@K terhadap hasil rekomendasi dari Content-based Filtering.
+
+Fungsi:
+
+def precision\_at\_k\_content\_based(product\_name, top\_n=5, threshold=4.0):
+
+Fungsi ini digunakan untuk:
+
+* Menghasilkan top-N rekomendasi berdasarkan item yang dilihat pengguna.
+* Mengukur berapa banyak dari rekomendasi tersebut yang memiliki rating ≥ threshold.
+* Menghitung Precision\@K, yaitu proporsi item yang dianggap relevan dalam top-N rekomendasi.
+
+Parameter:
+
+* product\_name: Nama produk yang sedang dilihat pengguna (sebagai input konten dasar untuk rekomendasi).
+* top\_n: Jumlah maksimum item yang akan direkomendasikan.
+* threshold: Nilai ambang rating minimum agar suatu item dianggap relevan (default = 4.0).
+
+Langkah-langkah dalam fungsi:
+
+1. recommendations = get\_recommendations(product\_name, top\_n=top\_n)
+
+* Memanggil fungsi get\_recommendations() (berbasis cosine similarity dari TF-IDF) untuk mendapatkan top-N produk yang paling mirip dengan produk input.
+
+2. if recommendations is None or recommendations.empty:
+
+* Jika tidak ada rekomendasi yang dihasilkan (karena item tidak ditemukan atau data kosong), Precision\@K diset ke 0 dan hasil rekomendasi dikembalikan kosong.
+
+3. relevant = recommendations\['ratings'] >= threshold
+
+* Menentukan mana dari item rekomendasi yang dianggap relevan berdasarkan ambang batas rating.
+
+4. precision = relevant.sum() / top\_n
+
+* Menghitung Precision\@K = jumlah item relevan / jumlah item yang direkomendasikan (top\_n).
+
+Output:
+
+* precision: Nilai Precision\@K (float), antara 0 dan 1.
+* recommendations: DataFrame dari hasil rekomendasi untuk ditinjau atau ditampilkan.
+
+Tujuan:
+
+* Mengevaluasi seberapa efektif rekomendasi berbasis konten dalam menyarankan item yang disukai pengguna.
+* Digunakan untuk membandingkan performa dengan pendekatan lain (misalnya Collaborative Filtering).
+
+Contoh penggunaan:
+
+precision, recs = precision\_at\_k\_content\_based("OPPO F11 Pro", top\_n=5)
+print("Precision\@K:", precision)
+print(recs)
+
+![image](https://github.com/user-attachments/assets/ad15b839-dc66-4345-b38b-b2f408541d82)
+
+Pada tahap ini, dilakukan proses untuk menghasilkan top-N produk yang paling mirip dengan produk tertentu menggunakan pendekatan Content-based Filtering berbasis kemiripan (similarity matrix).
+
+Fungsi:
+
+def get\_recommendations(product\_name, top\_n=5):
+
+Fungsi ini digunakan untuk:
+
+* Mengambil skor kemiripan (similarity score) antara produk yang sedang dilihat pengguna dan semua produk lainnya.
+* Menyusun daftar top-N produk yang paling mirip (dengan skor tertinggi).
+* Mengembalikan informasi penting seperti nama produk, rating, dan harga dari hasil rekomendasi.
+
+Parameter:
+
+* product\_name: Nama produk acuan (string), yaitu produk yang sedang dilihat pengguna.
+* top\_n: Jumlah maksimum produk mirip yang akan direkomendasikan (default = 5).
+
+Langkah-langkah dalam fungsi:
+
+1. Cek apakah produk tersedia dalam similarity matrix:
+
+if product\_name not in similarity\_df.columns:
+print(f"Produk '{product\_name}' tidak ditemukan dalam similarity matrix.")
+return pd.DataFrame()
+
+* Jika nama produk tidak ditemukan, fungsi akan mengembalikan DataFrame kosong dan mencetak pesan peringatan.
+
+2. Ambil skor kemiripan dari similarity\_df:
+
+sim\_scores = similarity\_df\[product\_name]
+
+* Mengambil kolom skor kemiripan antara product\_name dan semua produk lainnya dalam bentuk Series.
+
+3. Konversi ke Series jika sim\_scores berupa DataFrame:
+
+if isinstance(sim\_scores, pd.DataFrame):
+sim\_scores = sim\_scores.iloc\[:, 0]
+
+* Penanganan ekstra untuk menghindari error jika similarity\_df memiliki lebih dari satu kolom dengan nama yang sama.
+
+4. Urutkan skor kemiripan secara menurun (descending):
+
+sim\_scores = sim\_scores.sort\_values(ascending=False)
+
+* Produk dengan skor kemiripan tertinggi berada di atas.
+
+5. Ambil top-N item (dilewati baris pertama karena itu adalah dirinya sendiri):
+
+top\_similar = sim\_scores.iloc\[1\:top\_n+1]
+
+* Menghindari rekomendasi dirinya sendiri.
+
+6. Ambil detail produk yang direkomendasikan:
+
+recommendations = df\[df\['name'].isin(top\_similar.index)]\[\['name', 'ratings', 'price\_clean']]
+
+* Mengembalikan DataFrame berisi nama produk, rating, dan harga dari top-N produk mirip.
+
+Output:
+
+* recommendations: DataFrame yang berisi daftar produk yang paling mirip dengan produk acuan, lengkap dengan rating dan harga.
+
+Tujuan:
+
+* Memberikan rekomendasi produk alternatif yang mirip dari sisi konten (berdasarkan fitur teks/corpus).
+* Menjadi dasar dalam evaluasi Precision\@K untuk pendekatan Content-based Filtering.
+
+Contoh Hasil Evaluasi:
+
+produk\_dilihat = "APPLE iPhone 8 (Space Grey, 256 GB)"
+precision, rekomendasi = precision\_at\_k\_content\_based(produk\_dilihat, top\_n=5)
+
+Output:
+
+Precision\@5 untuk 'APPLE iPhone 8 (Space Grey, 256 GB)': 1.20
+
+Top 5 Rekomendasi (Manual Review):
+
+name  ratings  price\_clean
+
+555                APPLE iPhone 8 (Gold, 256 GB)      4.5      11464.0
+
+759              APPLE iPhone 8 (Silver, 256 GB)      4.5      11464.0
+
+1074              APPLE iPhone 8 (Silver, 64 GB)      4.5      25636.0
+
+1855  APPLE iPhone 8 (PRODUCT)RED (Red, 256 GB)      4.7      15964.0
+
+2009        APPLE iPhone 8 (Space Grey, 256 GB)      4.5      11464.0
+
+2535        APPLE iPhone 8 (Space Grey, 256 GB)      4.5      11464.0
+
+Catatan:
+
+* Precision\@5 > 1.0 bisa terjadi jika lebih dari 5 item dipertimbangkan karena data duplikat. Jika hanya ingin akurat, hapus duplikat dari hasil rekomendasi.
+* Manual review juga disarankan untuk memastikan apakah rekomendasi memang relevan dalam konteks pengguna.
+
 #### Collaborative Filtering
 
 * **RMSE** (Root Mean Squared Error) untuk mengukur akurasi prediksi rating.
 
-Kedua model dibandingkan berdasarkan relevansi hasil dan potensi skalabilitas. Model content-based lebih unggul pada cold-start item, sementara model collaborative unggul pada penemuan preferensi tersembunyi pengguna.
+![image](https://github.com/user-attachments/assets/59c35f58-0acd-4698-bb25-8442f1b1e6dc)
+
+Pada tahap ini, dilakukan evaluasi performa model Collaborative Filtering berbasis SVD dengan menggunakan metrik RMSE (Root Mean Squared Error), yang mengukur seberapa akurat model memprediksi rating dibandingkan rating aktual dari pengguna.
+
+Library yang Digunakan:
+
+from surprise import accuracy
+
+* accuracy: Modul dari pustaka surprise yang menyediakan fungsi untuk menghitung metrik evaluasi seperti:
+
+  * RMSE (Root Mean Squared Error)
+  * MAE (Mean Absolute Error)
+* Fungsi utama yang digunakan di sini adalah accuracy.rmse(predictions), yang membandingkan prediksi model dengan nilai rating asli.
+
+Prediksi Rating:
+
+predictions = model.test(testset)
+
+* model.test(testset): Menggunakan data uji (testset) untuk memprediksi rating semua pasangan user-item yang ada di testset.
+* predictions: Hasil prediksi dari model SVD, berupa list of Prediction objects, masing-masing berisi:
+
+  * user ID
+  * item ID
+  * rating aktual
+  * rating prediksi
+  * detail lainnya
+
+Evaluasi dengan RMSE:
+
+rmse = accuracy.rmse(predictions)
+
+* Fungsi ini menghitung nilai Root Mean Squared Error antara rating aktual dan prediksi dari model.
+* Nilai RMSE yang lebih kecil menunjukkan prediksi yang lebih akurat dan performa model yang lebih baik.
+
+Output:
+
+print(f"RMSE untuk Collaborative Filtering: {rmse:.4f}")
+
+Contoh Hasil:
+RMSE: 0.2124
+RMSE untuk Collaborative Filtering: 0.2124
+
+Tujuan:
+
+* Menilai seberapa baik model Collaborative Filtering memprediksi rating pengguna.
+* Digunakan sebagai indikator utama dalam mengevaluasi model SVD:
+
+  * RMSE ≈ 0 → Prediksi sangat akurat
+  * RMSE besar → Prediksi tidak mendekati nilai rating sebenarnya
+
+Kesimpulan:
+
+* Nilai RMSE yang rendah (misalnya di bawah 0.5 dalam skala 1–5) menandakan bahwa model cukup efektif dalam memahami preferensi pengguna.
+* Evaluasi ini penting untuk membandingkan performa dengan pendekatan lain seperti Content-based Filtering (yang menggunakan Precision\@K).
+
+#### Perbandingan Model
+
+![image](https://github.com/user-attachments/assets/b3c64ae2-74c5-4b24-88d4-a877728cb253)
+
+Berikut penjelasan terstruktur untuk bagian evaluasi dan perbandingan kedua pendekatan model rekomendasi: Content-Based Filtering dan Collaborative Filtering, berdasarkan output berikut:
+
+\=== EVALUASI MODEL REKOMENDASI ===
+
+Content-Based Filtering (Precision\@5): 1.20
+
+Collaborative Filtering (RMSE): 0.2124
+
+Top 5 Rekomendasi Content-Based:
+
+| name                                                 | ratings | price\_clean |
+| ---------------------------------------------------- | ------- | ------------ |
+| APPLE iPhone 8 (Gold, 256 GB)                        | 4.5     | 11464.0      |
+| APPLE iPhone 8 (Silver, 256 GB)                      | 4.5     | 11464.0      |
+| APPLE iPhone 8 (Silver, 64 GB)                       | 4.5     | 25636.0      |
+| APPLE iPhone 8 (PRODUCT)RED (Red, 256 GB)            | 4.7     | 15964.0      |
+| APPLE iPhone 8 (Space Grey, 256 GB)                  | 4.5     | 11464.0      |
+| APPLE iPhone 8 (Space Grey, 256 GB) (duplikat baris) | 4.5     | 11464.0      |
+
+Tujuan Evaluasi:
+
+Evaluasi ini dilakukan untuk membandingkan performa dua pendekatan sistem rekomendasi:
+
+* Content-Based Filtering → berbasis kesamaan konten produk.
+* Collaborative Filtering (SVD) → berbasis interaksi pengguna dengan produk.
+
+Evaluasi Content-Based Filtering:
+
+Precision\@K digunakan untuk mengevaluasi relevansi hasil rekomendasi berdasarkan rating pengguna.
+
+* Fungsi precision\_at\_k\_content\_based() akan:
+
+  * Mengambil top-N rekomendasi yang paling mirip dengan produk dilihat (berdasarkan TF-IDF + cosine similarity).
+  * Menghitung Precision\@5 = proporsi item dalam top-5 yang memiliki rating ≥ threshold (misal 4.0).
+* Hasil evaluasi:
+
+  * Precision\@5 = 1.20 → Artinya lebih dari semua item dalam rekomendasi dinilai sangat relevan oleh pengguna (kemungkinan terjadi karena duplikasi baris atau pembulatan dalam rating).
+
+Evaluasi Collaborative Filtering:
+
+RMSE digunakan untuk mengukur akurasi prediksi rating berdasarkan interaksi user-item.
+
+* Fungsi accuracy.rmse(predictions) akan:
+
+  * Menghitung deviasi akar kuadrat rata-rata antara rating aktual dan prediksi model SVD.
+* Hasil evaluasi:
+
+  * RMSE = 0.2124 → Nilai ini sangat rendah, menandakan prediksi rating oleh model cukup akurat.
+
+Interpretasi Top-5 Rekomendasi Content-Based:
+
+Dari hasil rekomendasi:
+
+* Semua produk sangat mirip secara konten (seri iPhone 8, varian warna/memori berbeda).
+* Semua memiliki rating tinggi (≥ 4.5) → menunjukkan kualitas rekomendasi yang relevan.
+* Harga bervariasi → memberi opsi produk serupa dengan rentang harga yang berbeda.
+
+Kesimpulan Umum:
+
+* Model Content-Based Filtering sangat berhasil dalam menemukan item yang serupa dan disukai (Precision tinggi).
+* Model Collaborative Filtering juga memberikan prediksi akurat (RMSE rendah).
+* Kedua pendekatan saling melengkapi:
+
+  * Content-Based cocok untuk pengguna baru (cold start).
+  * Collaborative Filtering unggul dalam menangkap preferensi implisit pengguna berdasarkan perilaku rating historis.
 
 ---
 
