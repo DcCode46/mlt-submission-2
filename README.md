@@ -262,78 +262,6 @@ Jumlah duplikasi data: 1 baris.
 
   **Tujuan**: menstandarkan skala fitur agar **nilai rating dan harga tidak mendominasi** dalam proses perhitungan kemiripan atau algoritma pembelajaran mesin lainnya. Ini penting dalam model **Content-Based Filtering** atau kombinasi fitur numerik dan teks.
 
-### Modeling
-
-#### Content-based Filtering
-
-* Menggunakan TF-IDF pada kolom `corpus`.
-* Menghitung similarity antar produk menggunakan cosine similarity.
-* Menghasilkan top-N rekomendasi berdasarkan item yang sedang dilihat pengguna.
-
-### Content-Based Filtering – Penjelasan Cara Kerja dan Tujuan
-
-#### **Cara Kerja:**
-
-1. **Menggunakan TF-IDF pada kolom `corpus`:**
-
-   * Setiap deskripsi produk (`corpus`) diubah menjadi vektor numerik menggunakan **TF-IDF (Term Frequency–Inverse Document Frequency)**.
-   * TF-IDF menekankan kata-kata penting yang unik di setiap produk, dan mengurangi pengaruh kata-kata umum.
-
-2. **Menghitung similarity antar produk menggunakan cosine similarity:**
-
-   * Setelah semua deskripsi dikonversi menjadi vektor, sistem menghitung **kemiripan antar produk** menggunakan **cosine similarity**, yang mengukur sudut antara dua vektor (nilai antara 0 dan 1).
-   * Produk dengan nilai cosine similarity tinggi berarti sangat mirip secara deskripsi.
-
-3. **Menghasilkan top-N rekomendasi:**
-
-   * Ketika pengguna melihat satu produk, sistem mencari produk lain dengan nilai cosine similarity tertinggi terhadap produk tersebut.
-   * Sistem akan merekomendasikan **N produk teratas** (misalnya 5 atau 10) yang paling mirip.
-
-
-#### **Tujuan:**
-
-* Memberikan rekomendasi **produk-produk serupa berdasarkan konten** atau fitur yang dimiliki produk, seperti spesifikasi teknis, sistem operasi, RAM, prosesor, dll.
-* Tidak bergantung pada perilaku pengguna lain atau rating, sehingga cocok untuk:
-
-  * Produk baru (cold start item)
-  * Pengguna yang belum banyak berinteraksi (anonymous user browsing)
-* Memberikan rekomendasi yang **lebih personal dan relevan** dengan produk yang sedang dilihat pengguna.
-
-
-#### Collaborative Filtering
-
-* Menggunakan pendekatan matrix factorization (SVD).
-* Membangun matriks user-item berdasarkan `ratings`.
-* Menghasilkan top-N rekomendasi untuk pengguna berdasarkan pola pengguna lain.
-
-### Collaborative Filtering – Penjelasan Cara Kerja dan Tujuan
-
-#### **Cara Kerja:**
-
-1. **Menggunakan pendekatan matrix factorization (SVD):**
-
-   * Collaborative Filtering berbasis **SVD (Singular Value Decomposition)** memecah **matriks user-item** menjadi tiga matriks terpisah untuk menemukan **hubungan tersembunyi** antara pengguna dan produk.
-   * SVD mengurangi dimensi data untuk mempermudah prediksi **preferensi pengguna terhadap produk** yang belum diberi rating.
-
-2. **Membangun matriks user-item berdasarkan ratings:**
-
-   * Matriks ini menyimpan informasi interaksi antara **pengguna** dan **produk** (biasanya berupa rating).
-   * Baris = pengguna, kolom = produk, nilai = rating. Jika tidak ada interaksi, nilainya kosong (NaN atau 0).
-   * Matriks ini menjadi input untuk algoritma SVD.
-
-3. **Menghasilkan top-N rekomendasi untuk pengguna:**
-
-   * Setelah matriks didekomposisi dan prediksi dilakukan, sistem **mengisi celah kosong** (produk yang belum dinilai pengguna).
-   * Lalu, sistem memilih **N produk dengan skor prediksi tertinggi** untuk diberikan sebagai rekomendasi.
-
-
-#### **Tujuan:**
-
-* Memberikan **rekomendasi yang dipersonalisasi** berdasarkan pola dan perilaku pengguna lain.
-* Tidak memerlukan informasi konten produk secara eksplisit, cukup berdasarkan data interaksi pengguna (misalnya rating).
-* Menyediakan **rekomendasi lintas preferensi**, seperti menyarankan produk yang disukai oleh pengguna lain yang mirip, meskipun produk tersebut sangat berbeda dari yang biasa dilihat pengguna.
-* Efektif untuk menangkap **tren kolektif dan selera umum pengguna**.
-
 ![image](https://github.com/user-attachments/assets/725234df-7b8d-43d5-a6c7-201e2031a4fb)
 
 Pada tahap ini, dilakukan instalasi library **NumPy** dengan versi 1.24.4:
@@ -431,6 +359,100 @@ Pada tahap ini, dilakukan simulasi data pengguna dan persiapan dataset untuk mem
 **Tujuan**:
 
 Menyiapkan data dalam format yang dibutuhkan oleh library `surprise`, dengan menyimulasikan pengguna agar model **Collaborative Filtering (SVD)** dapat dibangun dan diuji secara realistis meskipun dataset asli tidak memiliki informasi user.
+
+### Modeling
+
+#### Content-based Filtering
+
+* Menggunakan TF-IDF pada kolom `corpus`.
+* Menghitung similarity antar produk menggunakan cosine similarity.
+* Menghasilkan top-N rekomendasi berdasarkan item yang sedang dilihat pengguna.
+
+### Content-Based Filtering – Penjelasan Cara Kerja dan Tujuan
+
+#### **Cara Kerja:**
+
+1. **Menggunakan TF-IDF pada kolom `corpus`:**
+
+   * Setiap deskripsi produk (`corpus`) diubah menjadi vektor numerik menggunakan **TF-IDF (Term Frequency–Inverse Document Frequency)**.
+   * TF-IDF menekankan kata-kata penting yang unik di setiap produk, dan mengurangi pengaruh kata-kata umum.
+
+2. **Menghitung similarity antar produk menggunakan cosine similarity:**
+
+   * Setelah semua deskripsi dikonversi menjadi vektor, sistem menghitung **kemiripan antar produk** menggunakan **cosine similarity**, yang mengukur sudut antara dua vektor (nilai antara 0 dan 1).
+   * Produk dengan nilai cosine similarity tinggi berarti sangat mirip secara deskripsi.
+
+3. **Menghasilkan top-N rekomendasi:**
+
+   * Ketika pengguna melihat satu produk, sistem mencari produk lain dengan nilai cosine similarity tertinggi terhadap produk tersebut.
+   * Sistem akan merekomendasikan **N produk teratas** (misalnya 5 atau 10) yang paling mirip.
+
+
+Pada tahap ini, dilakukan proses pembuatan sistem rekomendasi berbasis **Content-Based Filtering** menggunakan **cosine similarity** antar vektor TF-IDF dari deskripsi produk (kemungkinan dari kolom `corpus`). Pertama, dihitung nilai kemiripan (cosine similarity) antar semua produk, lalu disimpan dalam bentuk DataFrame `similarity_df` yang indeks dan kolomnya adalah nama produk. Selanjutnya, dibuat fungsi `get_recommendations()` yang menerima nama produk dan mengembalikan top-N produk paling mirip berdasarkan nilai similarity tertinggi, dengan mengecualikan produk itu sendiri. Fungsi ini akan menampilkan nama, rating, dan harga dari produk-produk yang direkomendasikan. Contohnya, untuk produk **"REDMI Note 12 Pro 5G (Onyx Black, 128 GB)"**, sistem akan mengembalikan 5 varian produk serupa (misalnya beda warna atau kapasitas) yang memiliki deskripsi fitur mirip berdasarkan hasil pemrosesan TF-IDF.
+
+Output :
+
+![image](https://github.com/user-attachments/assets/3f1e0389-b5dc-4fae-8189-5dc45e5eb10d)
+
+Output tersebut menunjukkan **Top 5 rekomendasi produk smartphone** yang mirip dengan:
+
+### Penjelasan:
+
+* Semua produk adalah **REDMI Note 12 Pro 5G**, menandakan kesamaan fitur inti.
+* Variasi yang membedakan hanya pada **warna dan storage (128 GB vs 256 GB)**.
+* **Rating semuanya sama**: 4.2
+* **Harga** sedikit bervariasi tergantung pada varian:
+
+  * 128 GB: sekitar 23.999.000 – 24.999.000
+  * 256 GB: 26.999.000
+
+### Kesimpulan:
+
+Rekomendasi ini menyarankan **produk dengan spesifikasi dan fitur yang hampir identik**, cocok untuk user yang mempertimbangkan varian warna atau kapasitas penyimpanan lain dari model yang sama. Ini umum dilakukan dalam sistem rekomendasi berbasis konten (content-based), karena mempertimbangkan **kemiripan fitur/corpus teks produk** daripada popularitas pengguna lain.
+
+#### **Tujuan:**
+
+* Memberikan rekomendasi **produk-produk serupa berdasarkan konten** atau fitur yang dimiliki produk, seperti spesifikasi teknis, sistem operasi, RAM, prosesor, dll.
+* Tidak bergantung pada perilaku pengguna lain atau rating, sehingga cocok untuk:
+
+  * Produk baru (cold start item)
+  * Pengguna yang belum banyak berinteraksi (anonymous user browsing)
+* Memberikan rekomendasi yang **lebih personal dan relevan** dengan produk yang sedang dilihat pengguna.
+
+
+### Collaborative Filtering
+
+* Menggunakan pendekatan matrix factorization (SVD).
+* Membangun matriks user-item berdasarkan `ratings`.
+* Menghasilkan top-N rekomendasi untuk pengguna berdasarkan pola pengguna lain.
+
+#### Collaborative Filtering – Penjelasan Cara Kerja dan Tujuan
+
+#### **Cara Kerja:**
+
+1. **Menggunakan pendekatan matrix factorization (SVD):**
+
+   * Collaborative Filtering berbasis **SVD (Singular Value Decomposition)** memecah **matriks user-item** menjadi tiga matriks terpisah untuk menemukan **hubungan tersembunyi** antara pengguna dan produk.
+   * SVD mengurangi dimensi data untuk mempermudah prediksi **preferensi pengguna terhadap produk** yang belum diberi rating.
+
+2. **Membangun matriks user-item berdasarkan ratings:**
+
+   * Matriks ini menyimpan informasi interaksi antara **pengguna** dan **produk** (biasanya berupa rating).
+   * Baris = pengguna, kolom = produk, nilai = rating. Jika tidak ada interaksi, nilainya kosong (NaN atau 0).
+   * Matriks ini menjadi input untuk algoritma SVD.
+
+3. **Menghasilkan top-N rekomendasi untuk pengguna:**
+
+   * Setelah matriks didekomposisi dan prediksi dilakukan, sistem **mengisi celah kosong** (produk yang belum dinilai pengguna).
+   * Lalu, sistem memilih **N produk dengan skor prediksi tertinggi** untuk diberikan sebagai rekomendasi.
+
+
+#### **Tujuan:**
+
+* Memberikan **rekomendasi yang dipersonalisasi** berdasarkan pola dan perilaku pengguna lain.
+* Tidak memerlukan informasi konten produk secara eksplisit, cukup berdasarkan data interaksi pengguna (misalnya rating).
+* Menyediakan **rekomendasi lintas preferensi**, seperti menyarankan produk yang disukai oleh pengguna lain yang mirip, meskipun produk tersebut sangat berbeda dari yang biasa dilihat pengguna.
+* Efektif untuk menangkap **tren kolektif dan selera umum pengguna**.
 
 ![image](https://github.com/user-attachments/assets/2d4436ac-0f71-4257-9993-05be474da5a2)
 
@@ -574,7 +596,9 @@ Pada tahap ini, dilakukan proses untuk menghasilkan top-N produk yang paling mir
 
 Fungsi:
 
-def get\_recommendations(product\_name, top\_n=5):
+
+def get_recommendations(product_name, top_n=5):
+
 
 Fungsi ini digunakan untuk:
 
@@ -584,53 +608,65 @@ Fungsi ini digunakan untuk:
 
 Parameter:
 
-* product\_name: Nama produk acuan (string), yaitu produk yang sedang dilihat pengguna.
-* top\_n: Jumlah maksimum produk mirip yang akan direkomendasikan (default = 5).
+* `product_name`: Nama produk acuan (string), yaitu produk yang sedang dilihat pengguna.
+* `top_n`: Jumlah maksimum produk mirip yang akan direkomendasikan (default = 5).
 
 Langkah-langkah dalam fungsi:
 
 1. Cek apakah produk tersedia dalam similarity matrix:
 
-if product\_name not in similarity\_df.columns:
-print(f"Produk '{product\_name}' tidak ditemukan dalam similarity matrix.")
-return pd.DataFrame()
+
+if product_name not in similarity_df.columns:
+    print(f"Produk '{product_name}' tidak ditemukan dalam similarity matrix.")
+    return pd.DataFrame()
+
 
 * Jika nama produk tidak ditemukan, fungsi akan mengembalikan DataFrame kosong dan mencetak pesan peringatan.
 
-2. Ambil skor kemiripan dari similarity\_df:
+2. Ambil skor kemiripan dari `similarity_df`:
 
-sim\_scores = similarity\_df\[product\_name]
 
-* Mengambil kolom skor kemiripan antara product\_name dan semua produk lainnya dalam bentuk Series.
+sim_scores = similarity_df[product_name]
 
-3. Konversi ke Series jika sim\_scores berupa DataFrame:
 
-if isinstance(sim\_scores, pd.DataFrame):
-sim\_scores = sim\_scores.iloc\[:, 0]
+* Mengambil kolom skor kemiripan antara `product_name` dan semua produk lainnya dalam bentuk Series.
 
-* Penanganan ekstra untuk menghindari error jika similarity\_df memiliki lebih dari satu kolom dengan nama yang sama.
+3. Konversi ke Series jika `sim_scores` berupa DataFrame:
+
+
+if isinstance(sim_scores, pd.DataFrame):
+    sim_scores = sim_scores.iloc[:, 0]
+
+
+* Penanganan ekstra untuk menghindari error jika `similarity_df` memiliki lebih dari satu kolom dengan nama yang sama.
 
 4. Urutkan skor kemiripan secara menurun (descending):
 
-sim\_scores = sim\_scores.sort\_values(ascending=False)
+
+sim_scores = sim_scores.sort_values(ascending=False)
+
 
 * Produk dengan skor kemiripan tertinggi berada di atas.
 
 5. Ambil top-N item (dilewati baris pertama karena itu adalah dirinya sendiri):
 
-top\_similar = sim\_scores.iloc\[1\:top\_n+1]
+
+top_similar = sim_scores.iloc[1:top_n+1]
+
 
 * Menghindari rekomendasi dirinya sendiri.
 
 6. Ambil detail produk yang direkomendasikan:
 
-recommendations = df\[df\['name'].isin(top\_similar.index)]\[\['name', 'ratings', 'price\_clean']]
+
+recommendations = df[df['name'].isin(top_similar.index)][['name', 'ratings', 'price_clean']]
+
 
 * Mengembalikan DataFrame berisi nama produk, rating, dan harga dari top-N produk mirip.
 
 Output:
 
-* recommendations: DataFrame yang berisi daftar produk yang paling mirip dengan produk acuan, lengkap dengan rating dan harga.
+* `recommendations`: DataFrame yang berisi daftar produk yang paling mirip dengan produk acuan, lengkap dengan rating dan harga.
 
 Tujuan:
 
@@ -639,33 +675,30 @@ Tujuan:
 
 Contoh Hasil Evaluasi:
 
-produk\_dilihat = "APPLE iPhone 8 (Space Grey, 256 GB)"
-precision, rekomendasi = precision\_at\_k\_content\_based(produk\_dilihat, top\_n=5)
+
+produk_dilihat = "REDMI Note 12 Pro 5G (Onyx Black, 128 GB)"
+precision, rekomendasi = precision_at_k_content_based(produk_dilihat, top_n=5)
+
 
 Output:
 
-Precision\@5 untuk 'APPLE iPhone 8 (Space Grey, 256 GB)': 1.20
+
+Precision@5 untuk 'REDMI Note 12 Pro 5G (Onyx Black, 128 GB)': 1.00
 
 Top 5 Rekomendasi (Manual Review):
+                                                name  ratings  price_clean
+69    REDMI Note 12 Pro 5G (Stardust Purple, 128 GB)      4.2      23999.0
+305   REDMI Note 12 Pro 5G (Glacier Blue, 128 GB)      4.2      23999.0
+459   REDMI Note 12 Pro 5G (Onyx Black, 256 GB)      4.2      26999.0
+619   REDMI Note 12 Pro 5G (Stardust Purple, 128 GB)      4.2      24999.0
+1465  REDMI Note 12 Pro 5G (Glacier Blue, 128 GB)      4.2      24999.0
 
-name  ratings  price\_clean
-
-555                APPLE iPhone 8 (Gold, 256 GB)      4.5      11464.0
-
-759              APPLE iPhone 8 (Silver, 256 GB)      4.5      11464.0
-
-1074              APPLE iPhone 8 (Silver, 64 GB)      4.5      25636.0
-
-1855  APPLE iPhone 8 (PRODUCT)RED (Red, 256 GB)      4.7      15964.0
-
-2009        APPLE iPhone 8 (Space Grey, 256 GB)      4.5      11464.0
-
-2535        APPLE iPhone 8 (Space Grey, 256 GB)      4.5      11464.0
 
 Catatan:
 
-* Precision\@5 > 1.0 bisa terjadi jika lebih dari 5 item dipertimbangkan karena data duplikat. Jika hanya ingin akurat, hapus duplikat dari hasil rekomendasi.
-* Manual review juga disarankan untuk memastikan apakah rekomendasi memang relevan dalam konteks pengguna.
+* `Precision@5 = 1.00` menunjukkan bahwa semua hasil rekomendasi termasuk dalam kategori produk relevan atau serupa secara konten.
+* Manual review tetap disarankan untuk memastikan rekomendasi relevan dengan konteks kebutuhan pengguna.
+
 
 #### Collaborative Filtering
 
