@@ -590,7 +590,7 @@ precision, recs = precision\_at\_k\_content\_based("OPPO F11 Pro", top\_n=5)
 print("Precision\@K:", precision)
 print(recs)
 
-![image](https://github.com/user-attachments/assets/ad15b839-dc66-4345-b38b-b2f408541d82)
+![image](https://github.com/user-attachments/assets/60675fe7-463a-476e-af89-64270211235a)
 
 Pada tahap ini, dilakukan proses untuk menghasilkan top-N produk yang paling mirip dengan produk tertentu menggunakan pendekatan Content-based Filtering berbasis kemiripan (similarity matrix).
 
@@ -761,26 +761,23 @@ Kesimpulan:
 
 #### Perbandingan Model
 
-![image](https://github.com/user-attachments/assets/b3c64ae2-74c5-4b24-88d4-a877728cb253)
-
-Berikut penjelasan terstruktur untuk bagian evaluasi dan perbandingan kedua pendekatan model rekomendasi: Content-Based Filtering dan Collaborative Filtering, berdasarkan output berikut:
+![image](https://github.com/user-attachments/assets/57c33945-db62-46f8-b79b-a3769fa4651d)
 
 \=== EVALUASI MODEL REKOMENDASI ===
 
-Content-Based Filtering (Precision\@5): 1.20
+Content-Based Filtering (Precision\@5): 1.00
 
-Collaborative Filtering (RMSE): 0.2124
+Collaborative Filtering (RMSE): 0.2107
 
 Top 5 Rekomendasi Content-Based:
 
-| name                                                 | ratings | price\_clean |
-| ---------------------------------------------------- | ------- | ------------ |
-| APPLE iPhone 8 (Gold, 256 GB)                        | 4.5     | 11464.0      |
-| APPLE iPhone 8 (Silver, 256 GB)                      | 4.5     | 11464.0      |
-| APPLE iPhone 8 (Silver, 64 GB)                       | 4.5     | 25636.0      |
-| APPLE iPhone 8 (PRODUCT)RED (Red, 256 GB)            | 4.7     | 15964.0      |
-| APPLE iPhone 8 (Space Grey, 256 GB)                  | 4.5     | 11464.0      |
-| APPLE iPhone 8 (Space Grey, 256 GB) (duplikat baris) | 4.5     | 11464.0      |
+| name                                           | ratings | price\_clean |
+| ---------------------------------------------- | ------- | ------------ |
+| REDMI Note 12 Pro 5G (Stardust Purple, 128 GB) | 4.2     | 23999.0      |
+| REDMI Note 12 Pro 5G (Glacier Blue, 128 GB)    | 4.2     | 23999.0      |
+| REDMI Note 12 Pro 5G (Onyx Black, 256 GB)      | 4.2     | 26999.0      |
+| REDMI Note 12 Pro 5G (Stardust Purple, 128 GB) | 4.2     | 24999.0      |
+| REDMI Note 12 Pro 5G (Glacier Blue, 128 GB)    | 4.2     | 24999.0      |
 
 Tujuan Evaluasi:
 
@@ -793,31 +790,31 @@ Evaluasi Content-Based Filtering:
 
 Precision\@K digunakan untuk mengevaluasi relevansi hasil rekomendasi berdasarkan rating pengguna.
 
-* Fungsi precision\_at\_k\_content\_based() akan:
+* Fungsi `precision_at_k_content_based()` akan:
 
   * Mengambil top-N rekomendasi yang paling mirip dengan produk dilihat (berdasarkan TF-IDF + cosine similarity).
   * Menghitung Precision\@5 = proporsi item dalam top-5 yang memiliki rating ≥ threshold (misal 4.0).
 * Hasil evaluasi:
 
-  * Precision\@5 = 1.20 → Artinya lebih dari semua item dalam rekomendasi dinilai sangat relevan oleh pengguna (kemungkinan terjadi karena duplikasi baris atau pembulatan dalam rating).
+  * Precision\@5 = 1.00 → Artinya seluruh item dalam rekomendasi dinilai sangat relevan oleh pengguna.
 
 Evaluasi Collaborative Filtering:
 
 RMSE digunakan untuk mengukur akurasi prediksi rating berdasarkan interaksi user-item.
 
-* Fungsi accuracy.rmse(predictions) akan:
+* Fungsi `accuracy.rmse(predictions)` akan:
 
   * Menghitung deviasi akar kuadrat rata-rata antara rating aktual dan prediksi model SVD.
 * Hasil evaluasi:
 
-  * RMSE = 0.2124 → Nilai ini sangat rendah, menandakan prediksi rating oleh model cukup akurat.
+  * RMSE = 0.2107 → Nilai ini sangat rendah, menandakan prediksi rating oleh model cukup akurat.
 
 Interpretasi Top-5 Rekomendasi Content-Based:
 
 Dari hasil rekomendasi:
 
-* Semua produk sangat mirip secara konten (seri iPhone 8, varian warna/memori berbeda).
-* Semua memiliki rating tinggi (≥ 4.5) → menunjukkan kualitas rekomendasi yang relevan.
+* Semua produk sangat mirip secara konten (seri dan varian warna/memori dari REDMI Note 12 Pro 5G).
+* Semua memiliki rating tinggi (≥ 4.2) → menunjukkan kualitas rekomendasi yang relevan.
 * Harga bervariasi → memberi opsi produk serupa dengan rentang harga yang berbeda.
 
 Kesimpulan Umum:
@@ -828,6 +825,7 @@ Kesimpulan Umum:
 
   * Content-Based cocok untuk pengguna baru (cold start).
   * Collaborative Filtering unggul dalam menangkap preferensi implisit pengguna berdasarkan perilaku rating historis.
+
 
 ---
 
